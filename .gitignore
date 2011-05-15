@@ -1,0 +1,5 @@
+*.mk
+*.tags
+*.session
+/Release
+/Debug
