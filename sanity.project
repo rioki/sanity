@@ -2,11 +2,11 @@
 <CodeLite_Project Name="sanity" InternalType="Library">
   <Description/>
   <Dependencies/>
-  <VirtualDirectory Name="src">
+  <VirtualDirectory Name="Source Files">
     <File Name="src/trace.cpp"/>
     <File Name="src/check.cpp"/>
   </VirtualDirectory>
-  <VirtualDirectory Name="include">
+  <VirtualDirectory Name="Header Files">
     <File Name="include/sanity/trace.h"/>
     <File Name="include/sanity/check.h"/>
     <File Name="include/sanity/defines.h"/>
