@@ -5,11 +5,13 @@
   <VirtualDirectory Name="Source Files">
     <File Name="src/trace.cpp"/>
     <File Name="src/check.cpp"/>
+    <File Name="src/exceptions.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Header Files">
     <File Name="include/sanity/trace.h"/>
     <File Name="include/sanity/check.h"/>
     <File Name="include/sanity/defines.h"/>
+    <File Name="include/sanity/exceptions.h"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>
