@@ -12,6 +12,7 @@
     <File Name="include/sanity/check.h"/>
     <File Name="include/sanity/defines.h"/>
     <File Name="include/sanity/exceptions.h"/>
+    <File Name="include/sanity/compose.h"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>
