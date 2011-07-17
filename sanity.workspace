@@ -2,7 +2,7 @@
 <CodeLite_Workspace Name="sanity" Database="./sanity.tags">
   <Project Name="sanity" Path="sanity.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="no">
       <Project Name="sanity" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">

@@ -4,6 +4,7 @@
 #include "trace.h"
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <utility>
 
@@ -50,16 +51,26 @@ namespace sanity
         targets.push_back(std::make_pair(severity, &target));
     }
     
+//------------------------------------------------------------------------------    
+    std::string build_trace_line(TraceSeverity severity, const char* function, const char* message)
+    {
+        std::stringstream buff;
+        buff << severity << ": " << function << ": " << message << std::endl;
+        return buff.str();
+    }
+    
 //------------------------------------------------------------------------------
     void do_trace(TraceSeverity severity, const char* function, const char* message)
     {
-        std::vector<std::pair<TraceSeverity, std::ostream*> >::const_iterator iter;
-        iter = targets.begin();
+        std::string line = build_trace_line(severity, function, message);
+        
+        std::vector<std::pair<TraceSeverity, std::ostream*> >::const_iterator iter;        
+        iter = targets.begin();        
         while (iter != targets.end())
         {
             if (iter->first >= severity)
             {
-                *(iter->second) << severity << ": " << function << ": " << message << std::endl;
+                *(iter->second) << line;
             }
             ++iter;
         }
