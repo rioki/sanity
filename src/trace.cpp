@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <utility>
+#include <tuple>
 
 #include "check.h"
 
@@ -19,7 +19,9 @@ namespace sanity
     // The basic idea is that add_trace_target is called before any
     // traces are done, at the beginning of main and after that only trace is 
     // called. The worst that can happen then is messages getting mixed up.
-    std::vector<std::pair<TraceSeverity, std::ostream*> > targets;
+    ///std::vector<std::pair<TraceSeverity, std::ostream*> > targets;
+    
+    std::vector<std::tuple<TraceSeverity, TraceHandler, void*>> handlers;
     
 //------------------------------------------------------------------------------
     std::ostream& operator << (std::ostream& os, TraceSeverity severity)
@@ -46,33 +48,35 @@ namespace sanity
     }
     
 //------------------------------------------------------------------------------
-    void add_trace_target(TraceSeverity severity, std::ostream& target)
+    void stream_handler(TraceSeverity severity, const char* function, const char* message, void* data)
     {
-        targets.push_back(std::make_pair(severity, &target));
+        std::ostream* os = reinterpret_cast<std::ostream*>(data);
+        (*os) << severity << ": " << function << ": " << message << std::endl;
     }
     
-//------------------------------------------------------------------------------    
-    std::string build_trace_line(TraceSeverity severity, const char* function, const char* message)
+//------------------------------------------------------------------------------
+    void add_trace_target(TraceSeverity severity, std::ostream& target)
     {
-        std::stringstream buff;
-        buff << severity << ": " << function << ": " << message << std::endl;
-        return buff.str();
+        add_trace_handler(severity, stream_handler, &target);
+    }
+
+//------------------------------------------------------------------------------        
+    void add_trace_handler(TraceSeverity severity, TraceHandler handler, void* data)
+    {
+        handlers.push_back(std::make_tuple(severity, handler, data));
     }
     
 //------------------------------------------------------------------------------
     void do_trace(TraceSeverity severity, const char* function, const char* message)
     {
-        std::string line = build_trace_line(severity, function, message);
-        
-        std::vector<std::pair<TraceSeverity, std::ostream*> >::const_iterator iter;        
-        iter = targets.begin();        
-        while (iter != targets.end())
+        for (auto h: handlers)
         {
-            if (iter->first >= severity)
+            if (std::get<0>(h) >= severity)
             {
-                *(iter->second) << line;
+                TraceHandler handler = std::get<1>(h);
+                void* data = std::get<2>(h);
+                handler(severity, function, message, data);
             }
-            ++iter;
         }
     }
     
