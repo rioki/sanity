@@ -25,11 +25,12 @@ namespace sanity
     /**
      * Stream operator for TraceSeverity.
      **/
+    _SANITY_EXPORT
     std::ostream& operator << (std::ostream& os, TraceSeverity severity);  
     
     /**
      * Handler function for tracing.
-     **/
+     **/    
     typedef void (*TraceHandler)(TraceSeverity severity, const char* function, const char* message, void* data);
     
     /**
@@ -38,6 +39,7 @@ namespace sanity
      * @param severity the minimum severity for that target
      * @param target the stream to trace to
      **/
+    _SANITY_EXPORT
     void add_trace_target(TraceSeverity severity, std::ostream& target);
     
     /**
@@ -47,6 +49,7 @@ namespace sanity
      * @param handler the trace handler
      * @param data user data for the handler
      **/
+    _SANITY_EXPORT
     void add_trace_handler(TraceSeverity severity, TraceHandler handler, void* data);
     
     /**
@@ -58,7 +61,9 @@ namespace sanity
      * 
      * @{
      **/
+    _SANITY_EXPORT
     void do_trace(TraceSeverity severity, const char* function, const char* message);    
+    _SANITY_EXPORT
     void do_trace(TraceSeverity severity, const char* function, const std::string& message);
     /** @} **/
 }

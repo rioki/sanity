@@ -4,13 +4,18 @@
 #ifndef _SANITY_DEFINES_H_
 #define _SANITY_DEFINES_H_
 
-// TODO Add the other non standard function macros.
 #if defined _MSC_VER
 #define _SANITY_FUNCTION_ __FUNCTION__
 #elif defined  __GNUC__
 #define _SANITY_FUNCTION_ __PRETTY_FUNCTION__
 #else
 #define _SANITY_FUNCTION_ __func__
+#endif
+
+#if defined _MSC_VER
+#define _SANITY_EXPORT __declspec(dllexport)
+#else
+#define _SANITY_EXPORT
 #endif
 
 #ifdef ASSERT

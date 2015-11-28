@@ -13,16 +13,19 @@ namespace sanity
     /**
      * Implementation for the ASSERT macro.
      **/
+    _SANITY_EXPORT
     void do_assert(bool cond, const char* function, const char* str_cond);
     
     /**
      * Implementation for the REQUIRE macro.
      **/
+    _SANITY_EXPORT
     void do_require(bool cond, const char* function, const char* str_cond);
     
     /**
      * Implementation for the ENSURE macro.
      **/
+    _SANITY_EXPORT
     void do_ensure(bool cond, const char* function, const char* str_cond);
     
     /**
@@ -30,13 +33,16 @@ namespace sanity
      *
      * @{
      **/
+    _SANITY_EXPORT
     void do_fail(const char* function, const char* message);
+    _SANITY_EXPORT
     void do_fail(const char* function, const std::string& message);
     /** @} **/
 
     /**
      * Implementation for the CHECK_ARGUMENT macro.
      **/
+    _SANITY_EXPORT
     void do_check_argument(bool cond, const char* function, const char* str_cond);
 }
 
