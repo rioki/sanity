@@ -2,3 +2,9 @@
 *.d
 *.dll
 *.a
+Debug
+Release
+.vs
+*.sdf
+*.opensdf
+*.user
