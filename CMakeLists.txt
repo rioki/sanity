@@ -45,7 +45,7 @@ if(ENABLE_UNIT_TESTS)
   set_target_properties(sanity PROPERTIES
       CXX_STANDARD 20
   )
-  target_link_libraries(sanity-test PRIVATE sanity GTest::gtest)
+  target_link_libraries(sanity-test PRIVATE rioki_sanity GTest::gtest)
   add_test(NAME sanity-test
            COMMAND sanity-test
   )
