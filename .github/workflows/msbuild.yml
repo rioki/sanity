@@ -60,10 +60,10 @@ jobs:
       run: msbuild /m /p:Configuration=Debug /property:Platform=${{matrix.platform}} sanity.sln
     - name: Test (Debug)
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: bin/${{matrix.platform}}/Debug/sanity-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
+      run: ${{matrix.platform}}/Debug/sanity-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
     - name: Build (Release)
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=Release /property:Platform=${{matrix.platform}} sanity.sln
     - name: Test Release)
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: bin/${{matrix.platform}}/Release/sanity-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
+      run: ${{matrix.platform}}/Release/sanity-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
