@@ -18,7 +18,7 @@ set(PRIV_HEADERS
 )
 
 # library
-add_library(rioki_sanity PRIVATE cxx_std_20
+add_library(rioki_sanity
   sanity/check.cpp
   sanity/crash_dump.cpp
   sanity/pch.cpp
@@ -33,7 +33,7 @@ set_target_properties(rioki_sanity PROPERTIES
 # unit tests
 if(ENABLE_UNIT_TESTS)
   find_package(GTest CONFIG REQUIRED)
-  add_executable(rioki_sanity_test PRIVATE cxx_std_20
+  add_executable(rioki_sanity_test
     sanity-test/check_test.cpp
     sanity-test/DebugMonitor.cpp
     sanity-test/main.cpp
