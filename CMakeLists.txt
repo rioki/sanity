@@ -18,7 +18,7 @@ set(PRIV_HEADERS
 )
 
 # library
-add_library(rioki_sanity
+add_library(rioki_sanity PRIVATE cxx_std_20
   sanity/check.cpp
   sanity/crash_dump.cpp
   sanity/pch.cpp
