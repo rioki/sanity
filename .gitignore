@@ -1,0 +1,11 @@
+
+# Build Outputs
+x64
+Win32
+
+# VS Temp Files
+.vs
+*.user
+
+# vcpkg
+vcpkg_installed
