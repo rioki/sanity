@@ -1,10 +1,11 @@
-*.o
-*.d
-*.dll
-*.a
-Debug
-Release
+
+# Build Outputs
+x64
+Win32
+
+# VS Temp Files
 .vs
-*.sdf
-*.opensdf
 *.user
+
+# vcpkg
+vcpkg_installed
