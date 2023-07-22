@@ -11,6 +11,12 @@ set(HEADERS
   sanity/sanity.h
 )
 
+# Headers that exist, but should not be installed.
+# This only exists to satisfy the CMake check script.
+set(PRIV_HEADERS
+  sanity/pch.h
+)
+
 # library
 add_library(rioki_sanity
   sanity/check.cpp
