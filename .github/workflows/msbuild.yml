@@ -57,13 +57,13 @@ jobs:
         ./vcpkg/vcpkg integrate install
     - name: Build (Debug)
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=Debug /property:Platform=${{matrix.platform}} pkzo.sln
+      run: msbuild /m /p:Configuration=Debug /property:Platform=${{matrix.platform}} sanity.sln
     - name: Test (Debug)
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: bin/${{matrix.platform}}/Debug/pkzo-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
+      run: bin/${{matrix.platform}}/Debug/sanity-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
     - name: Build (Release)
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=Release /property:Platform=${{matrix.platform}} pkzo.sln
+      run: msbuild /m /p:Configuration=Release /property:Platform=${{matrix.platform}} sanity.sln
     - name: Test Release)
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: bin/${{matrix.platform}}/Release/pkzo-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
+      run: bin/${{matrix.platform}}/Release/sanity-test.exe --gtest_filter=-*.GRAPHICAL_*:*.NOCI_*
