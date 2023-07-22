@@ -33,7 +33,7 @@ set_target_properties(rioki_sanity PROPERTIES
 # unit tests
 if(ENABLE_UNIT_TESTS)
   find_package(GTest CONFIG REQUIRED)
-  add_executable(sanity-test
+  add_executable(rioki_sanity_test PRIVATE cxx_std_20
     sanity-test/check_test.cpp
     sanity-test/DebugMonitor.cpp
     sanity-test/main.cpp
@@ -41,13 +41,12 @@ if(ENABLE_UNIT_TESTS)
     sanity-test/trace_test.cpp
   )
   include_directories(.)
-  target_compile_features(sanity-test PRIVATE cxx_std_20)
-  set_target_properties(sanity-test PROPERTIES
+  set_target_properties(rioki_sanity_test PROPERTIES
       CXX_STANDARD 20
   )
-  target_link_libraries(sanity-test PRIVATE rioki_sanity GTest::gtest)
-  add_test(NAME sanity-test
-           COMMAND sanity-test
+  target_link_libraries(rioki_sanity_test PRIVATE rioki_sanity GTest::gtest)
+  add_test(NAME rioki_sanity_test
+           COMMAND rioki_sanity_test
   )
 endif()
 
