@@ -42,7 +42,7 @@ if(ENABLE_UNIT_TESTS)
   )
   include_directories(.)
   target_compile_features(sanity-test PRIVATE cxx_std_20)
-  set_target_properties(sanity PROPERTIES
+  set_target_properties(sanity-test PROPERTIES
       CXX_STANDARD 20
   )
   target_link_libraries(sanity-test PRIVATE rioki_sanity GTest::gtest)
