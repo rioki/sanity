@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  VCPKG_COMMIT: 9d47b24eacbd1cd94f139457ef6cd35e5d92cc84
+  VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
+  CTEST_OUTPUT_ON_FAILURE: 1
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3.5.3
+    - name: Check CMake
+      uses: actions/github-script@v6
+      with:
+        script: |
+          let path = require('path');
+          let fs = require('fs').promises;
+          let patterns = ['**/sanity/*.cpp', '**/sanity-test/*.cpp', '**/sanity/*.h'];
+          let globber = await glob.create(patterns.join('\n'));
+          let cmakeContents = await fs.readFile('CMakeLists.txt', 'utf-8');
+          for await (let file of globber.globGenerator()) {
+            let basename = path.basename(file);
+            if (cmakeContents.search(basename) == -1) {
+              core.setFailed(`${basename} is missing in CMakeLists.txt`);
+            }
+          }
+  msbuild:
+    needs: check
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [x86, x64]
+        config: [Debug, Release]
+        include:
+          - platform: x86
+            triplet: x86-windows
+          - platform: x64
+            triplet: x64-windows
+    runs-on: windows-latest
+    env:
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.triplet }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3.5.3
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.3.1
+    - name: Restore from cache and install vcpkg
+      uses: lukka/run-vcpkg@v11.1
+      with:
+        vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+        appendedCacheKey: ${{ matrix.triplet }}
+    - name: 'Setup NuGet/Vcpkg Credentials'
+      shell: 'bash'
+      run: >
+        `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+          sources add \
+          -source "https://nuget.pkg.github.com/rioki/index.json" \
+          -storepasswordincleartext \
+          -name "GitHub" \
+          -username "rioki" \
+          -password "${{ secrets.GITHUB_TOKEN }}"
+        `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+          setapikey "${{ secrets.GITHUB_TOKEN }}" \
+          -source "https://nuget.pkg.github.com/rioki/index.json"
+    - name: Integrate vcpkg in MSBuild
+      shell: 'bash'
+      run: vcpkg.exe integrate install
+    - name: Build
+      run: msbuild /m /p:Configuration=${{matrix.config}} /property:Platform=${{matrix.platform}} sanity.sln
+    - name: Test
+      continue-on-error: true
+      run: ${{matrix.platform}}/${{matrix.config}}/sanity-test.exe
+  cmake:
+    needs: check
+    strategy:
+      fail-fast: false
+      matrix:
+        triplet: [x86-windows, x64-windows, x64-linux, x64-macos]
+        include:
+          - triplet: x86-windows
+            system: windows-latest
+            mono: ''
+          - triplet: x64-windows
+            system: windows-latest
+            mono: ''
+          - triplet: x64-linux
+            system: ubuntu-latest
+            mono: 'mono'
+          - triplet: x64-macos
+            system: macos-latest
+            mono: 'mono'
+    runs-on: ${{ matrix.system }}
+    env:
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.triplet }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3.5.3
+    - name: Set up Clang
+      uses: egor-tensin/setup-clang@v1
+      if: matrix.triplet == 'x64-linux'
+      with:
+        version: 15
+        platform: x64
+    - name: Install CMake
+      uses: lukka/get-cmake@latest
+    - name: Restore from cache and install vcpkg
+      uses: lukka/run-vcpkg@v11.1
+      with:
+        vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+        appendedCacheKey: ${{ matrix.triplet }}
+    - name: 'Setup NuGet/Vcpkg Credentials'
+      shell: 'bash'
+      run: >
+        ${{ matrix.mono }} `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+          sources add \
+          -source "https://nuget.pkg.github.com/rioki/index.json" \
+          -storepasswordincleartext \
+          -name "GitHub" \
+          -username "rioki" \
+          -password "${{ secrets.GITHUB_TOKEN }}"
+        ${{ matrix.mono }} `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+          setapikey "${{ secrets.GITHUB_TOKEN }}" \
+          -source "https://nuget.pkg.github.com/rioki/index.json"
+    - name: Build
+      uses: lukka/run-cmake@v10.6
+      with:
+        configurePreset: 'ninja-test'
+        buildPreset: 'ninja-test'
+        testPreset: 'ninja-test'

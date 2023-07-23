@@ -26,13 +26,32 @@ namespace sanity
         }
     }
 
-    void trace(const std::string_view message, const std::source_location location) noexcept
+    std::string funcname(const std::string& func) noexcept
     {
-        const auto line = std::format("{}({}): {}: {}\n", basename(location.file_name()), location.line(), location.function_name(), message);
+        auto i = func.find_last_of(":");
+        auto j = func.find_first_of("(");
+        if (i == std::string::npos)
+        {
+            return func;
+        }
+        else
+        {
+            auto d = j - i - 1;         // j is allowed to be npos
+            if (d > (func.length() - i + 1))  // handle j == npos
+            {
+                d = (func.length() - i + 1);
+            }
+            return func.substr(i + 1, d);
+        }
+    }
+
+    void trace(const std::string_view message, const source_location location) noexcept
+    {
         #ifdef _WIN32
+        const auto line = std::format("{}({}): {}: {}\n", basename(location.file_name()), location.line(), funcname(location.function_name()), message);
         OutputDebugStringA(line.c_str());
         #else
-        std::cerr << line;
+        std::cerr << basename(location.file_name()) << "(" << location.line() << "): " << funcname(location.function_name()) << ": " << message << std::endl;
         #endif
     }
 }

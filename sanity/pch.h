@@ -9,14 +9,20 @@
 
 #pragma once
 
+#include <version>
 #include <exception>
 #include <string_view>
+#ifdef __cpp_lib_source_location
 #include <source_location>
+#endif
 #include <array>
+#ifdef _WIN32
 #include <format>
+#endif
 #include <filesystem>
+#include <iostream>
 
-#if _WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #include <dbghelp.h>
 #endif

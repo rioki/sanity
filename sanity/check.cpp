@@ -19,8 +19,6 @@ namespace sanity
     {
         #ifdef _WIN32
         return IsDebuggerPresent();
-        #else
-        #error Port Me
         #endif
         return false;
     }
@@ -30,12 +28,10 @@ namespace sanity
     {
         #ifdef _WIN32
         DebugBreak();
-        #else
-        #error Port Me
         #endif
     }
 
-    void fail(const std::string_view msg, const std::source_location location) noexcept
+    void fail(const std::string_view msg, const source_location location) noexcept
     {
         trace(msg, location);
 
@@ -49,7 +45,7 @@ namespace sanity
         std::terminate();
     }
 
-    void check(bool condition, const std::string_view msg, const std::source_location location) noexcept
+    void check(bool condition, const std::string_view msg, const source_location location) noexcept
     {
         if (! condition)
         {

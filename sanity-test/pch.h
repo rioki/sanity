@@ -14,4 +14,19 @@
 #include <mutex>
 #include <sstream>
 
-#include <windows.h>
+#ifdef _WIN32
+#include <Windows.h>
+#include <tlhelp32.h>
+#else
+#include <unistd.h>
+#endif
+
+template <typename T>
+void sleep_for(const T duration)
+{
+    #ifdef _WIN32
+    std::this_thread::sleep_for(duration);
+    #else
+    usleep(std::chrono::duration_cast<std::chrono::microseconds>(duration).count());
+    #endif
+}
