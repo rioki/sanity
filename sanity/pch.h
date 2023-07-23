@@ -16,10 +16,12 @@
 #include <source_location>
 #endif
 #include <array>
+#ifdef _WIN32
 #include <format>
+#endif
 #include <filesystem>
 
-#if _WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #include <dbghelp.h>
 #endif

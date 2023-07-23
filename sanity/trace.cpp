@@ -28,11 +28,11 @@ namespace sanity
 
     void trace(const std::string_view message, const source_location location) noexcept
     {
-        const auto line = std::format("{}({}): {}: {}\n", basename(location.file_name()), location.line(), location.function_name(), message);
         #ifdef _WIN32
+        const auto line = std::format("{}({}): {}: {}\n", basename(location.file_name()), location.line(), location.function_name(), message);
         OutputDebugStringA(line.c_str());
         #else
-        std::cerr << line;
+        std::cerr << basename(location.file_name()) << "(" << location.line() << "): " << location.function_name() << ": " << message << std::endl;
         #endif
     }
 }

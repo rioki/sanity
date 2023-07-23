@@ -19,8 +19,6 @@ namespace sanity
     {
         #ifdef _WIN32
         return IsDebuggerPresent();
-        #else
-        #error Port Me
         #endif
         return false;
     }
@@ -30,8 +28,6 @@ namespace sanity
     {
         #ifdef _WIN32
         DebugBreak();
-        #else
-        #error Port Me
         #endif
     }
 
