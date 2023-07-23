@@ -11,8 +11,6 @@
 
 #include "DebugMonitor.h"
 
-#include <tlhelp32.h>
-
 namespace test
 {
 #ifdef _WIN32
