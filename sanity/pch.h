@@ -9,9 +9,12 @@
 
 #pragma once
 
+#include <version>
 #include <exception>
 #include <string_view>
+#ifdef __cpp_lib_source_location
 #include <source_location>
+#endif
 #include <array>
 #include <format>
 #include <filesystem>

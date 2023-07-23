@@ -35,6 +35,7 @@ ENDIF()
 
 # unit tests
 if(ENABLE_UNIT_TESTS)
+  enable_testing()
   find_package(GTest CONFIG REQUIRED)
   add_executable(sanity_test
     sanity-test/check_test.cpp
@@ -44,12 +45,12 @@ if(ENABLE_UNIT_TESTS)
     sanity-test/trace_test.cpp
   )
   include_directories(.)
-  set_target_properties(sanity_test PROPERTIES
+  set_target_properties(sanity-test PROPERTIES
       CXX_STANDARD 20
   )
-  target_link_libraries(sanity_test PRIVATE sanity GTest::gtest)
-  add_test(NAME sanity_test
-           COMMAND sanity_test
+  target_link_libraries(sanity-test PRIVATE sanity GTest::gtest)
+  add_test(NAME sanity-test
+           COMMAND sanity-test
   )
 endif()
 
