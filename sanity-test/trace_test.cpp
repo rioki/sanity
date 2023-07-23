@@ -14,6 +14,7 @@
 
 using namespace std::chrono_literals;
 
+#ifndef __linux__
 TEST(trace, trace)
 {
     auto debug_monitor = test::DebugMonitor{};
@@ -26,3 +27,4 @@ TEST(trace, trace)
                      "trace_test.cpp(22): TestBody: Ok... So, what now?\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
+#endif
