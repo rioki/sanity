@@ -34,7 +34,7 @@ namespace sanity
         constexpr source_location(const source_location& other) = default;
         constexpr source_location(source_location&& other) noexcept = default;
 
-        static consteval source_location current(std::uint_least32_t l = __builtin_LINE(), const char* fi = __builtin_FILE(), const char* fu = __builtin_FUNCTION()) noexcept
+        static constexpr source_location current(std::uint_least32_t l = __builtin_LINE(), const char* fi = __builtin_FILE(), const char* fu = __builtin_FUNCTION()) noexcept
         {
             auto sl = source_location{};
             sl._line          = l;
