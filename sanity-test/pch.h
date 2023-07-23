@@ -27,6 +27,6 @@ void sleep_for(const T duration)
     #ifdef _WIN32
     std::this_thread::sleep_for(duration);
     #else
-    usleep (std::chrono::duration_cast<std::chrono::microsecond>(duration));
+    usleep(std::chrono::duration_cast<std::chrono::microseconds>(duration));
     #endif
 }
