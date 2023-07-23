@@ -15,6 +15,7 @@
 
 namespace test
 {
+#ifdef _WIN32
     [[nodiscard]]
     DWORD GetParentProcessId(DWORD pid) noexcept
     {
@@ -40,10 +41,11 @@ namespace test
 
         return ppid;
     }
+#endif
 
     DebugMonitor::DebugMonitor()
     {
-
+#ifdef _WIN32
         auto DBWIN_BUFFER_READY = L"DBWIN_BUFFER_READY";
         buffer_ready_event = OpenEventW(EVENT_ALL_ACCESS, FALSE, DBWIN_BUFFER_READY);
         if (buffer_ready_event == NULL)
@@ -105,16 +107,19 @@ namespace test
                 }
             }
         });
+#endif
     }
 
     DebugMonitor::~DebugMonitor()
     {
+#ifdef _WIN32
         thread.request_stop();
         thread.join();
         CloseHandle(buffer_ready_event);
         CloseHandle(data_ready_event);
         UnmapViewOfFile(buffer);
         CloseHandle(mapped_file);
+#endif
     }
 
     std::string DebugMonitor::get_output() const noexcept

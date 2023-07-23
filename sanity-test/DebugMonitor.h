@@ -12,7 +12,9 @@
 #include <mutex>
 #include <sstream>
 
-#include <windows.h>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 namespace test
 {
@@ -25,19 +27,22 @@ namespace test
         [[nodiscard]] std::string get_output() const noexcept;
 
     private:
+        mutable std::mutex mutex;
+        std::stringstream  output;
+
+        #ifdef _WIN32
         struct dbwin_buffer
         {
             DWORD dwProcessId;
             char  data[4096-sizeof(DWORD)];
         };
 
-        mutable std::mutex mutex;
-        std::stringstream  output;
         HANDLE             buffer_ready_event;
         HANDLE             data_ready_event;
         HANDLE             mapped_file;
         dbwin_buffer*      buffer;
         std::jthread       thread;
+        #endif
 
         DebugMonitor(const DebugMonitor&) = delete;
         DebugMonitor& operator = (const DebugMonitor&) = delete;
