@@ -13,6 +13,10 @@
 
 namespace sanity
 {
+    #ifndef MAX_PATH
+    constexpr auto MAX_PATH = 256u;
+    #endif
+
     std::string basename(const std::string& file) noexcept;
 
     std::string get_env_variable(const std::string_view name) noexcept
@@ -60,13 +64,18 @@ namespace sanity
         }
 
         return std::string(buff.data(), r);
+        #else
+        return "sanity";
         #endif
-        return "";
     }
 
     std::filesystem::path create_crash_dump_name() noexcept
     {
+        #if __cpp_lib_chrono >= 201907L
         const auto time     = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
+        #else
+        const auto time     = std::chrono::system_clock::now();
+        #endif
         const auto exe_name = basename(get_module_filename());
         auto filename = std::format("{}.{:%Y-%m-%d_%H-%M-%S}.dmp", exe_name, time);
         return get_temp_folder() / filename;
