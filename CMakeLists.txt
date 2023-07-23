@@ -29,7 +29,7 @@ set_target_properties(sanity PROPERTIES
     PUBLIC_HEADER "${HEADERS}"
 )
 IF (WIN32)
-target_link_libraries(sanity Dbghlp.lib)
+target_link_libraries(sanity Dbghelp.lib)
 ENDIF()
 
 
