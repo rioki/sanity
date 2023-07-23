@@ -36,19 +36,22 @@
       "name": "ninja",
       "configurePreset": "ninja",
       "displayName": "Build with Ninja",
-      "description": "Build with Ninja"
+      "description": "Build with Ninja",
+      "configuration": "Release"
     },
     {
       "name": "ninja-test",
       "configurePreset": "ninja-test",
       "displayName": "Build ninja-test",
-      "description": "Build ninja-test Configurations"
+      "description": "Build ninja-test Configurations",
+      "configuration": "Debug"
     }
   ],
   "testPresets": [
     {
       "name": "ninja-test",
-      "configurePreset": "ninja-test"
+      "configurePreset": "ninja-test",
+      "configuration": "Debug"
     }
   ]
 }
