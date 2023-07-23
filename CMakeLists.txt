@@ -37,7 +37,7 @@ ENDIF()
 if(ENABLE_UNIT_TESTS)
   enable_testing()
   find_package(GTest CONFIG REQUIRED)
-  add_executable(sanity_test
+  add_executable(sanity-test
     sanity-test/check_test.cpp
     sanity-test/DebugMonitor.cpp
     sanity-test/main.cpp
