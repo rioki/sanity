@@ -26,7 +26,7 @@ namespace sanity
         }
     }
 
-    void trace(const std::string_view message, const std::source_location location) noexcept
+    void trace(const std::string_view message, const source_location location) noexcept
     {
         const auto line = std::format("{}({}): {}: {}\n", basename(location.file_name()), location.line(), location.function_name(), message);
         #ifdef _WIN32

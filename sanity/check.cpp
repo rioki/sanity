@@ -35,7 +35,7 @@ namespace sanity
         #endif
     }
 
-    void fail(const std::string_view msg, const std::source_location location) noexcept
+    void fail(const std::string_view msg, const source_location location) noexcept
     {
         trace(msg, location);
 
@@ -49,7 +49,7 @@ namespace sanity
         std::terminate();
     }
 
-    void check(bool condition, const std::string_view msg, const std::source_location location) noexcept
+    void check(bool condition, const std::string_view msg, const source_location location) noexcept
     {
         if (! condition)
         {
