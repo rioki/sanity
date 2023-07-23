@@ -19,6 +19,7 @@ TEST(fail, fail_dies)
     EXPECT_DEATH(sanity::fail(), "");
 }
 
+#ifdef _WIN32
 TEST(fail, traces)
 {
     auto debug_monitor = test::DebugMonitor{};
@@ -26,7 +27,7 @@ TEST(fail, traces)
     EXPECT_DEATH(sanity::fail("Oh No!"), "");
 
     sleep_for(10ms);
-    const auto ref = "check_test.cpp(26): TestBody: Oh No!\n";
+    const auto ref = "check_test.cpp(27): TestBody: Oh No!\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
 
@@ -37,9 +38,10 @@ TEST(fail, traces_default)
     EXPECT_DEATH(sanity::fail(), "");
 
     sleep_for(10ms);
-    const auto ref = "check_test.cpp(37): TestBody: Unexpected failure.\n";
+    const auto ref = "check_test.cpp(38): TestBody: Unexpected failure.\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
+#endif
 
 TEST(check, true_passes)
 {
@@ -61,6 +63,7 @@ TEST(check, true_no_trace)
     EXPECT_EQ("", debug_monitor.get_output());
 }
 
+#ifdef _WIN32
 TEST(check, traces)
 {
     auto debug_monitor = test::DebugMonitor{};
@@ -68,7 +71,7 @@ TEST(check, traces)
     EXPECT_DEATH(sanity::check(false, "Something Aweful!"), "");
 
     sleep_for(10ms);
-    const auto ref = "check_test.cpp(68): TestBody: Something Aweful!\n";
+    const auto ref = "check_test.cpp(71): TestBody: Something Aweful!\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
 
@@ -80,6 +83,7 @@ TEST(check, traces_default)
     EXPECT_DEATH(sanity::check(false), "");
 
     sleep_for(10ms);
-    const auto ref = "check_test.cpp(80): TestBody: Check failed.\n";
+    const auto ref = "check_test.cpp(83): TestBody: Check failed.\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
+ #endif
