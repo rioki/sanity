@@ -19,8 +19,12 @@ namespace sanity
 
     std::string basename(const std::string& file) noexcept;
 
+    #ifdef _WIN32
+    // This code is mostly portable but is not needed as long as crash dumps are
+    // not implemented. So don't bother making it perfectly portable.
     std::string get_env_variable(const std::string_view name) noexcept
     {
+        #ifdef _WIN32
         auto buffer = std::array<char, MAX_PATH>{};
         auto len    = size_t{0};
 
@@ -29,6 +33,13 @@ namespace sanity
         {
             return std::string(buffer.data(), len);
         }
+        #else
+        auto var = std::getenv(name.data());
+        if (var != nullptr)
+        {
+            return std::string(var);
+        }
+        #endif
 
         return {};
     }
@@ -80,6 +91,7 @@ namespace sanity
         auto filename = std::format("{}.{:%Y-%m-%d_%H-%M-%S}.dmp", exe_name, time);
         return get_temp_folder() / filename;
     }
+    #endif
 
     #ifdef _WIN32
     MINIDUMP_EXCEPTION_INFORMATION GetExceptionInfo(EXCEPTION_POINTERS* exceptionPointers) noexcept
