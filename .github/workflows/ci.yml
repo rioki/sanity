@@ -107,6 +107,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3.5.3
+    - name: Set up Clang
+      uses: egor-tensin/setup-clang@v1
+      if: ${{ matrix.triplet }} == 'x64-linux'
+      with:
+        version: latest
+        platform: x64
     - name: Install CMake
       uses: lukka/get-cmake@latest
     - name: Restore from cache and install vcpkg
