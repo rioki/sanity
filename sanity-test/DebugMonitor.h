@@ -42,6 +42,8 @@ namespace test
         HANDLE             mapped_file;
         dbwin_buffer*      buffer;
         std::jthread       thread;
+        #else
+        std::streambuf* prevcoutbuf = nullptr;
         #endif
 
         DebugMonitor(const DebugMonitor&) = delete;

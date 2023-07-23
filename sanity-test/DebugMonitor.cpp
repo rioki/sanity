@@ -105,6 +105,8 @@ namespace test
                 }
             }
         });
+#else
+        prevcoutbuf = std::cerr.rdbuf(output.rdbuf());
 #endif
     }
 
@@ -117,6 +119,8 @@ namespace test
         CloseHandle(data_ready_event);
         UnmapViewOfFile(buffer);
         CloseHandle(mapped_file);
+#else
+        std::cerr.rdbuf(prevcoutbuf);
 #endif
     }
 
