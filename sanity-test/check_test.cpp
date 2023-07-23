@@ -14,12 +14,6 @@
 
 using namespace std::chrono_literals;
 
-template <typename T>
-void sleep_for(const T duration)
-{
-    std::this_thread::sleep_for(duration);
-}
-
 TEST(fail, fail_dies)
 {
     EXPECT_DEATH(sanity::fail(), "");

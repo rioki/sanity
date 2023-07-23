@@ -9,8 +9,6 @@
 
 #pragma once
 
-#define _GLIBCXX_USE_NANOSLEEP
-
 #include <gtest/gtest.h>
 
 #include <mutex>
@@ -19,4 +17,16 @@
 #ifdef _WIN32
 #include <Windows.h>
 #include <tlhelp32.h>
+#else
+#include <unistd.h>
 #endif
+
+template <typename T>
+void sleep_for(const T duration)
+{
+    #ifdef _WIN32
+    std::this_thread::sleep_for(duration);
+    #else
+    usleep (std::chrono::duration_cast<std::chrono::microsecond>(duration));
+    #endif
+}
