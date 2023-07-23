@@ -14,6 +14,12 @@
 
 using namespace std::chrono_literals;
 
+template <typename T>
+void sleep_for(const T duration)
+{
+    std::this_thread::sleep_for(duration);
+}
+
 TEST(trace, trace)
 {
     auto debug_monitor = test::DebugMonitor{};
@@ -21,7 +27,7 @@ TEST(trace, trace)
     sanity::trace("Ups! Did I do that?");
     sanity::trace("Ok... So, what now?");
 
-    std::this_thread::sleep_for(50ms);
+    sleep_for(50ms);
     const auto ref = "trace_test.cpp(21): TestBody: Ups! Did I do that?\n"
                      "trace_test.cpp(22): TestBody: Ok... So, what now?\n";
     EXPECT_EQ(ref, debug_monitor.get_output());

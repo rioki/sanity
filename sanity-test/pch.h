@@ -9,6 +9,8 @@
 
 #pragma once
 
+#define _GLIBCXX_USE_NANOSLEEP
+
 #include <gtest/gtest.h>
 
 #include <mutex>

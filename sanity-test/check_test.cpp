@@ -14,6 +14,12 @@
 
 using namespace std::chrono_literals;
 
+template <typename T>
+void sleep_for(const T duration)
+{
+    std::this_thread::sleep_for(duration);
+}
+
 TEST(fail, fail_dies)
 {
     EXPECT_DEATH(sanity::fail(), "");
@@ -25,7 +31,7 @@ TEST(fail, traces)
 
     EXPECT_DEATH(sanity::fail("Oh No!"), "");
 
-    std::this_thread::sleep_for(10ms);
+    sleep_for(10ms);
     const auto ref = "check_test.cpp(26): TestBody: Oh No!\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
@@ -36,7 +42,7 @@ TEST(fail, traces_default)
 
     EXPECT_DEATH(sanity::fail(), "");
 
-    std::this_thread::sleep_for(10ms);
+    sleep_for(10ms);
     const auto ref = "check_test.cpp(37): TestBody: Unexpected failure.\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
@@ -57,7 +63,7 @@ TEST(check, true_no_trace)
 
     sanity::check(true, "Something Aweful!");
 
-    std::this_thread::sleep_for(10ms);
+    sleep_for(10ms);
     EXPECT_EQ("", debug_monitor.get_output());
 }
 
@@ -67,7 +73,7 @@ TEST(check, traces)
 
     EXPECT_DEATH(sanity::check(false, "Something Aweful!"), "");
 
-    std::this_thread::sleep_for(10ms);
+    sleep_for(10ms);
     const auto ref = "check_test.cpp(68): TestBody: Something Aweful!\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
@@ -79,7 +85,7 @@ TEST(check, traces_default)
 
     EXPECT_DEATH(sanity::check(false), "");
 
-    std::this_thread::sleep_for(10ms);
+    sleep_for(10ms);
     const auto ref = "check_test.cpp(80): TestBody: Check failed.\n";
     EXPECT_EQ(ref, debug_monitor.get_output());
 }
