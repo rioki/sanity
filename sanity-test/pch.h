@@ -16,4 +16,5 @@
 
 #ifdef _WIN32
 #include <Windows.h>
+#include <tlhelp32.h>
 #endif
