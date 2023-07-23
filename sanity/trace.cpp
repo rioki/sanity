@@ -36,7 +36,7 @@ namespace sanity
         }
         else
         {
-            auto d = j - i - 2;         // j is allowed to be npos
+            auto d = j - i - 1;         // j is allowed to be npos
             if (d > (func.length() - i + 1))  // handle j == npos
             {
                 d = (func.length() - i + 1);
