@@ -3,4 +3,4 @@
 include(CMakeFindDependencyMacro)
 
 # Add the targets file
-include("${CMAKE_CURRENT_LIST_DIR}/rioki_sanityTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/sanityTargets.cmake")
